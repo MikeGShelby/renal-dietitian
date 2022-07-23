@@ -2,7 +2,7 @@
 
 // React, Next, and Material UI imports
 import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   AppBar,
   Box,
@@ -29,12 +29,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { GiLiver as LiverIcon, GiWaterBottle as WaterBottleIcon, GiWeightScale as WeightScaleIcon, GiBanana as BananaIcon } from "react-icons/gi";
 import { TbBone as BoneIcon } from "react-icons/tb";
 
+// Component imports
+import SingleSelectRadioInput from "./FormInputs/SingleSelectRadioInput";
+import NoteContainer from "./NoteContainer";
+
 // data imports
-import { nutritionTopicData } from "../data/nutritionTopicData2";
+import { nutritionTopicData } from "../data/nutritionTopicData";
 import { rootCausesAndInterventions } from "../data/rootCausesAndInterventions";
 import NutritionTopicDataType from "../lib/interfaces/NutritionTopicDataType";
 import NutritionSubsectionDataType from "../lib/interfaces/NutritionSubsectionDataType";
 import NutritionProblemDataType from "../lib/interfaces/NutritionProblemDataType";
+import SelectStringInput from "../../../theme-park-dietitian/src/components/AdminFormComponents/Inputs/SelectStringInput";
 
 const drawerWidth = 240;
 
@@ -56,30 +61,136 @@ export default function ResponsiveDrawer(props: Props) {
   //   formState: { errors },
   // } = useFormContext();
 
-  // const selectPhosphorusProblem = watch("selectPhosphorusProblem");
-  // Create problem selection each time the selection variable changes
-  // useEffect(() => {
-  //   setSelectedPhosphorusProblem(selectPhosphorusProblem);
-  // }, [selectPhosphorusProblem]);
+  // Add default values here
+  const formMethods = useForm<any>({
+    reValidateMode: "onChange",
+  });
+
+  const { watch } = formMethods;
 
   // State hooks
   const [selectedPage, setSelectedPage] = useState<NutritionTopicDataType>(nutritionTopicData[0]);
   const [selectedSubsection, setSelectedSubsection] = useState<NutritionSubsectionDataType>(selectedPage.subsections[0]);
-  const [selectedProblemsArray, setSelectedProblemsArray] = useState<string[] | null>([]);
-  const [selectedPhosphorusProblem, setSelectedPhosphorusProblem] = useState<string>("");
-  const [selectedAlbuminProblem, setSelectedAlbuminProblem] = useState<string>("");
+  const [selectedProblemsArray, setSelectedProblemsArray] = useState<string[]>([]);
 
+  const [selectedWeightProblem, setSelectedWeightProblem] = useState<string | null>();
+  const [selectedFluidProblem, setSelectedFluidProblem] = useState<string | undefined>();
+  const [selectedAlbuminProblem, setSelectedAlbuminProblem] = useState<string | null>();
+  const [selectedPhosphorusProblem, setSelectedPhosphorusProblem] = useState<string | null>();
+  const [selectedPTHProblem, setSelectedPTHProblem] = useState<string | null>();
+  const [selectedCalciumProblem, setSelectedCalciumProblem] = useState<string | null>();
+  const [selectedPotassiumProblem, setSelectedPotassiumProblem] = useState<string | null>();
+
+  const [defaultProblemSelection, setDefaultProblemSelection] = useState<string | null>(null);
+
+  const selectWeightProblem = watch("selectWeightProblem");
+  const selectFluidProblem = watch("selectFluidProblem");
+  const selectAlbuminProblem = watch("selectAlbuminProblem");
+
+  const selectPhosphorusProblem = watch("selectPhosphorusProblem");
+  const selectPTHProblem = watch("selectPTHProblem");
+  const selectCalciumProblem = watch("selectCalciumProblem");
+
+  const selectPotassiumProblem = watch("selectPotassiumProblem");
+
+  // Each time a page subsection is selected, update the default value to display the selected problem for that particular subsection.
+  useEffect(() => {
+    switch (selectedSubsection.name) {
+      case "Weight":
+        setDefaultProblemSelection(selectWeightProblem);
+        break;
+      case "Fluid":
+        setDefaultProblemSelection(selectFluidProblem);
+        break;
+      case "Albumin":
+        setDefaultProblemSelection(selectAlbuminProblem);
+        break;
+      case "Phosphorus":
+        setDefaultProblemSelection(selectPhosphorusProblem);
+        break;
+      case "PTH":
+        setDefaultProblemSelection(selectPTHProblem);
+        break;
+      case "Calcium":
+        setDefaultProblemSelection(selectCalciumProblem);
+        break;
+      case "Potassium":
+        setDefaultProblemSelection(selectPotassiumProblem);
+        break;
+    }
+  }, [selectedSubsection]);
+
+  // Create problem selection each time the selection variable changes
+  useEffect(() => {
+    setSelectedWeightProblem(selectWeightProblem);
+  }, [selectWeightProblem]);
+
+  useEffect(() => {
+    setSelectedFluidProblem(selectFluidProblem);
+  }, [selectFluidProblem]);
+
+  useEffect(() => {
+    setSelectedAlbuminProblem(selectAlbuminProblem);
+  }, [selectAlbuminProblem]);
+
+  useEffect(() => {
+    setSelectedPhosphorusProblem(selectPhosphorusProblem);
+  }, [selectPhosphorusProblem]);
+
+  useEffect(() => {
+    setSelectedPTHProblem(selectPTHProblem);
+  }, [selectPTHProblem]);
+
+  useEffect(() => {
+    setSelectedCalciumProblem(selectCalciumProblem);
+  }, [selectCalciumProblem]);
+
+  useEffect(() => {
+    setSelectedPotassiumProblem(selectPotassiumProblem);
+  }, [selectPotassiumProblem]);
+
+  /// ******
   useEffect(() => {
     setSelectedSubsection(selectedPage.subsections[0]);
   }, [selectedPage]);
 
-  useEffect(() => {
-    setSelectedProblemsArray([selectedPhosphorusProblem, selectedAlbuminProblem]);
-  }, [selectedPage, selectedAlbuminProblem, selectedPhosphorusProblem]);
+  // useEffect(() => {
+  //   setSelectedProblemsArray([
+  //     selectedWeightProblem,
+  //     selectedFluidProblem,
+  //     selectedAlbuminProblem,
+  //     selectedPhosphorusProblem,
+  //     selectedPTHProblem,
+  //     selectedCalciumProblem,
+  //     selectedPotassiumProblem,
+  //   ]);
+  // }, [
+  //   selectedPage,
+  //   selectedWeightProblem,
+  //   selectedFluidProblem,
+  //   selectedAlbuminProblem,
+  //   selectedPhosphorusProblem,
+  //   selectedPTHProblem,
+  //   selectedCalciumProblem,
+  //   selectedPotassiumProblem,
+  // ]);
 
   useEffect(() => {
-    // setSelectedProblemsArray(null);
-  }, [selectedSubsection]);
+    setSelectedProblemsArray([
+      selectWeightProblem,
+      selectFluidProblem,
+      selectAlbuminProblem,
+      selectPhosphorusProblem,
+      selectPTHProblem,
+      selectCalciumProblem,
+      selectPotassiumProblem,
+    ]);
+    console.log(selectedProblemsArray);
+  }, [selectedPage, selectWeightProblem, selectFluidProblem, selectAlbuminProblem, selectPhosphorusProblem, selectPTHProblem, selectCalciumProblem, selectPotassiumProblem]);
+
+  const selectedProblemsArrayWithoutUndefined = selectedProblemsArray.filter((element) => {
+    return element !== undefined;
+  });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -97,13 +208,13 @@ export default function ResponsiveDrawer(props: Props) {
     }
   };
 
-  function handleClick(event: any) {
-    if (event.target.value === selectedPhosphorusProblem) {
-      setSelectedPhosphorusProblem("");
-    } else {
-      setSelectedPhosphorusProblem(event.target.value);
-    }
-  }
+  // function handleClick(event: any) {
+  //   if (event.target.value === selectedPhosphorusProblem) {
+  //     setSelectedPhosphorusProblem("");
+  //   } else {
+  //     setSelectedPhosphorusProblem(event.target.value);
+  //   }
+  // }
 
   const drawer = (
     <div>
@@ -138,7 +249,7 @@ export default function ResponsiveDrawer(props: Props) {
         ))}
       </List>
       <List>
-        {selectedProblemsArray?.map((problem, index) => (
+        {selectedProblemsArrayWithoutUndefined?.map((problem, index) => (
           <>
             <ListItem key={problem} disablePadding>
               <ListItemButton>
@@ -238,11 +349,21 @@ export default function ResponsiveDrawer(props: Props) {
             )}
           </Grid>
         </Box>
-        <Typography variant="h4" gutterBottom>
-          Selected Subsection: {selectedSubsection?.title}
-        </Typography>
 
-        <FormControl>
+        <NoteContainer title={selectedSubsection?.title} />
+
+        <FormProvider {...formMethods}>
+          <SingleSelectRadioInput
+            key={selectedSubsection?.title}
+            name={selectedSubsection?.name}
+            labelID={selectedSubsection?.labelID}
+            labelText={selectedSubsection?.title}
+            defaultValue={defaultProblemSelection}
+            array={selectedSubsection?.problems.map((problem, index) => problem.title)}
+          />
+        </FormProvider>
+
+        {/* <FormControl>
           <FormLabel id="demo-controlled-radio-buttons-group">Select a Problem</FormLabel>
           <RadioGroup aria-labelledby="demo-controlled-radio-buttons-group" name="controlled-radio-buttons-group" value={selectedPhosphorusProblem}>
             {selectedSubsection?.problems.map((problem, index) => (
@@ -251,7 +372,7 @@ export default function ResponsiveDrawer(props: Props) {
               </>
             ))}
           </RadioGroup>
-        </FormControl>
+        </FormControl> */}
 
         <Typography variant="body1">Selected Problem: {"N/A"}</Typography>
 
@@ -261,7 +382,7 @@ export default function ResponsiveDrawer(props: Props) {
               Select Root Causes
             </Typography>
             <Grid container>
-              {rootCausesAndInterventions
+              {/* {rootCausesAndInterventions
                 .filter((item) => item.groups.includes(selectedPhosphorusProblem))
                 .map((item) => (
                   <>
@@ -276,7 +397,7 @@ export default function ResponsiveDrawer(props: Props) {
                       </Button>
                     </Grid>
                   </>
-                ))}
+                ))} */}
             </Grid>
           </>
         )}

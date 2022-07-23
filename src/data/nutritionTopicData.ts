@@ -5,6 +5,8 @@ export const nutritionTopicData = [
     subsections: [
       {
         title: "Weight",
+        name: "selectWeightProblem",
+        labelID: "weight-problem-select",
         problems: [
           {
             title: ">= 5% EDW loss in 1 month",
@@ -46,7 +48,8 @@ export const nutritionTopicData = [
       },
       {
         title: "Fluid",
-        description: "???",
+        name: "selectFluidProblem",
+        labelID: "fluid-problem-select",
         problems: [
           {
             title: "Average IDWG > 4% EDW",
@@ -77,6 +80,8 @@ export const nutritionTopicData = [
     subsections: [
       {
         title: "Albumin",
+        name: "selectAlbuminProblem",
+        labelID: "albumin-problem-select",
         problems: [
           {
             title: "Albumin < 4.0 g/dL",
@@ -138,6 +143,8 @@ export const nutritionTopicData = [
     subsections: [
       {
         title: "Phosphorus",
+        name: "selectPhosphorusProblem",
+        labelID: "phosphorus-problem-select",
         problems: [
           {
             title: "Phosphorus > 5.5",
@@ -199,6 +206,8 @@ export const nutritionTopicData = [
       },
       {
         title: "PTH",
+        name: "selectPTHProblem",
+        labelID: "PTH-problem-select",
         problems: [
           {
             title: "PTH > 760",
@@ -252,6 +261,8 @@ export const nutritionTopicData = [
       },
       {
         title: "Calcium",
+        name: "selectCalciumProblem",
+        labelID: "calcium-problem-select",
         problems: [
           {
             title: "Calcium > 10.2",
