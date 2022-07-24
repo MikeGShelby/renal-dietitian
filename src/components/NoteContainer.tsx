@@ -3,9 +3,11 @@
 // React, Next, and Material UI imports
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Grid, Paper, Box, Typography } from "@mui/material";
+import { Grid, Paper, Box, Typography, IconButton } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+
+import { VscClearAll as ClearAllIcon } from "react-icons/vsc";
 
 // component imports
 import CopyToClipboardButton from "./CopyToClipboardButton";
@@ -40,6 +42,9 @@ export default function NoteContainer({ title }: Props) {
         <Typography variant="h4" gutterBottom>
           {title} Notes
         </Typography>
+        <IconButton onClick={() => console.log("clear all notes for this section")} sx={{ backgroundColor: "red" }}>
+          <ClearAllIcon />
+        </IconButton>
         <CopyToClipboardButton buttonText={title} notes={title} />
         <Typography variant="body1" gutterBottom>
           Note Text{" "}
