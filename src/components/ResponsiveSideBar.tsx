@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 // React, Next, and Material UI imports
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FormProvider, useForm, Controller } from "react-hook-form";
 import {
   AppBar,
@@ -37,6 +37,9 @@ import SingleSelectRadioInput from "./FormInputs/SingleSelectRadioInput";
 import SelectStringInput from "./FormInputs/SelectStringInput";
 import NoteContainer from "./NoteContainer";
 
+// Context imports
+import { useNutritionProblemContext } from "../context/NutritionProblemContext";
+
 // data imports
 import { nutritionTopicData } from "../data/nutritionTopicData";
 import { rootCausesAndInterventions } from "../data/rootCausesAndInterventions";
@@ -58,6 +61,40 @@ interface Props {
 
 export default function ResponsiveDrawer(props: Props) {
   // Context hooks
+  const {
+    pageList,
+    setPageList,
+    selectedPage,
+    setSelectedPage,
+    subsectionList,
+    setSubsectionList,
+    selectedSubsection,
+    setSelectedSubsection,
+    problemList,
+    setProblemList,
+    selectedProblem,
+    setSelectedProblem,
+    selectedProblemsArray,
+    setSelectedProblemsArray,
+    selectedWeightProblem,
+    setSelectedWeightProblem,
+    selectedFluidProblem,
+    setSelectedFluidProblem,
+    selectedAlbuminProblem,
+    setSelectedAlbuminProblem,
+    selectedPhosphorusProblem,
+    setSelectedPhosphorusProblem,
+    selectedPTHProblem,
+    setSelectedPTHProblem,
+    selectedCalciumProblem,
+    setSelectedCalciumProblem,
+    selectedPotassiumProblem,
+    setSelectedPotassiumProblem,
+    defaultProblemSelection,
+    setDefaultProblemSelection,
+  } = useNutritionProblemContext();
+
+  // Misc. hooks
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   // const {
@@ -75,26 +112,26 @@ export default function ResponsiveDrawer(props: Props) {
   const { watch, control } = formMethods;
 
   // State hooks
-  const [pageList, setPageList] = useState<NutritionTopicDataType[]>(nutritionTopicData);
-  const [selectedPage, setSelectedPage] = useState<NutritionTopicDataType>(nutritionTopicData[0]);
+  // const [pageList, setPageList] = useState<NutritionTopicDataType[]>(nutritionTopicData);
+  // const [selectedPage, setSelectedPage] = useState<NutritionTopicDataType>(nutritionTopicData[0]);
 
-  const [subsectionList, setSubsectionList] = useState<NutritionSubsectionDataType[]>(nutritionTopicData[0].subsections);
-  const [selectedSubsection, setSelectedSubsection] = useState<NutritionSubsectionDataType>(selectedPage.subsections[0]);
+  // const [subsectionList, setSubsectionList] = useState<NutritionSubsectionDataType[]>(nutritionTopicData[0].subsections);
+  // const [selectedSubsection, setSelectedSubsection] = useState<NutritionSubsectionDataType>(selectedPage.subsections[0]);
 
-  const [problemList, setProblemList] = useState<NutritionProblemDataType[]>([]);
-  const [selectedProblem, setSelectedProblem] = useState<NutritionProblemDataType | null>();
+  // const [problemList, setProblemList] = useState<NutritionProblemDataType[]>([]);
+  // const [selectedProblem, setSelectedProblem] = useState<NutritionProblemDataType | null>();
 
-  const [selectedProblemsArray, setSelectedProblemsArray] = useState<string[]>([]);
+  // const [selectedProblemsArray, setSelectedProblemsArray] = useState<string[]>([]);
 
-  const [selectedWeightProblem, setSelectedWeightProblem] = useState<string | null>();
-  const [selectedFluidProblem, setSelectedFluidProblem] = useState<string | undefined>();
-  const [selectedAlbuminProblem, setSelectedAlbuminProblem] = useState<string | null>();
-  const [selectedPhosphorusProblem, setSelectedPhosphorusProblem] = useState<string | null>();
-  const [selectedPTHProblem, setSelectedPTHProblem] = useState<string | null>();
-  const [selectedCalciumProblem, setSelectedCalciumProblem] = useState<string | null>();
-  const [selectedPotassiumProblem, setSelectedPotassiumProblem] = useState<string | null>();
+  // const [selectedWeightProblem, setSelectedWeightProblem] = useState<string | null>();
+  // const [selectedFluidProblem, setSelectedFluidProblem] = useState<string | undefined>();
+  // const [selectedAlbuminProblem, setSelectedAlbuminProblem] = useState<string | null>();
+  // const [selectedPhosphorusProblem, setSelectedPhosphorusProblem] = useState<string | null>();
+  // const [selectedPTHProblem, setSelectedPTHProblem] = useState<string | null>();
+  // const [selectedCalciumProblem, setSelectedCalciumProblem] = useState<string | null>();
+  // const [selectedPotassiumProblem, setSelectedPotassiumProblem] = useState<string | null>();
 
-  const [defaultProblemSelection, setDefaultProblemSelection] = useState<string>("");
+  // const [defaultProblemSelection, setDefaultProblemSelection] = useState<string>("");
 
   // const selectProblem = watch("selectProblem");
   const selectWeightProblem = watch("selectWeightProblem");
