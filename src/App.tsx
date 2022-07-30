@@ -1,16 +1,15 @@
 import Button from "@mui/material/Button";
-import ResponsiveSideBar from "./components/ResponsiveSideBar";
+import ResponsiveSideBar from "./components/SideBarAndHeader";
 
 // Context imports
 import NutritionProblemContext from "./context/NutritionProblemContext";
+import SideBarAndHeader from "./components/SideBarAndHeader";
 
 function App() {
   return (
     <NutritionProblemContext>
       <div className="App">
-        :D !!!!
-        <Button variant="contained">First MUI Component</Button>
-        <ResponsiveSideBar />
+        <SideBarAndHeader />
       </div>
     </NutritionProblemContext>
   );

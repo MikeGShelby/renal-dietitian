@@ -59,7 +59,7 @@ interface Props {
   window?: () => Window;
 }
 
-export default function ResponsiveDrawer(props: Props) {
+export default function DrawerContent(props: Props) {
   // Context hooks
   const {
     pageList,
@@ -112,26 +112,6 @@ export default function ResponsiveDrawer(props: Props) {
   const { watch, control } = formMethods;
 
   // State hooks
-  // const [pageList, setPageList] = useState<NutritionTopicDataType[]>(nutritionTopicData);
-  // const [selectedPage, setSelectedPage] = useState<NutritionTopicDataType>(nutritionTopicData[0]);
-
-  // const [subsectionList, setSubsectionList] = useState<NutritionSubsectionDataType[]>(nutritionTopicData[0].subsections);
-  // const [selectedSubsection, setSelectedSubsection] = useState<NutritionSubsectionDataType>(selectedPage.subsections[0]);
-
-  // const [problemList, setProblemList] = useState<NutritionProblemDataType[]>([]);
-  // const [selectedProblem, setSelectedProblem] = useState<NutritionProblemDataType | null>();
-
-  // const [selectedProblemsArray, setSelectedProblemsArray] = useState<string[]>([]);
-
-  // const [selectedWeightProblem, setSelectedWeightProblem] = useState<string | null>();
-  // const [selectedFluidProblem, setSelectedFluidProblem] = useState<string | undefined>();
-  // const [selectedAlbuminProblem, setSelectedAlbuminProblem] = useState<string | null>();
-  // const [selectedPhosphorusProblem, setSelectedPhosphorusProblem] = useState<string | null>();
-  // const [selectedPTHProblem, setSelectedPTHProblem] = useState<string | null>();
-  // const [selectedCalciumProblem, setSelectedCalciumProblem] = useState<string | null>();
-  // const [selectedPotassiumProblem, setSelectedPotassiumProblem] = useState<string | null>();
-
-  // const [defaultProblemSelection, setDefaultProblemSelection] = useState<string>("");
 
   // const selectProblem = watch("selectProblem");
   const selectWeightProblem = watch("selectWeightProblem");
@@ -280,7 +260,9 @@ export default function ResponsiveDrawer(props: Props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  return (
     <div>
       <Toolbar />
       <Divider />
@@ -300,18 +282,7 @@ export default function ResponsiveDrawer(props: Props) {
         ))}
       </List>
       <Divider />
-      <List>
-        {["All"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <LiverIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+
       <List>
         {selectedProblemsArrayWithoutUndefined?.map((problem, index) => (
           <>
@@ -324,153 +295,5 @@ export default function ResponsiveDrawer(props: Props) {
         ))}
       </List>
     </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      {/* Header */}
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: "none" } }}>
-            {/* <MenuIcon /> */}
-            MenuIcon
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          paddingLeft: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
-        <Toolbar />
-        <Box
-          sx={{
-            paddingBottom: 2,
-            backgroundColor: "yellow",
-            height: "125px",
-          }}
-        >
-          <Typography variant="h4" gutterBottom>
-            {selectedPage?.title}
-          </Typography>
-
-          {/* Subsection Buttons */}
-          {selectedPage?.subsections.length > 1 && (
-            <Grid container>
-              {subsectionList?.length > 1 && (
-                <>
-                  {subsectionList.map((subsection) => (
-                    <Grid item key={subsection.title}>
-                      <Button onClick={() => setSelectedSubsection(subsection)}>{subsection.title}</Button>
-                    </Grid>
-                  ))}
-                </>
-              )}
-            </Grid>
-          )}
-        </Box>
-
-        <NoteContainer title={selectedSubsection?.title} />
-
-        {/* Nutrition Problem Buttons */}
-        {problemList.map((problem) => problem.title)}
-
-        <FormProvider {...formMethods}>
-          <SingleSelectRadioInput
-            key={selectedSubsection?.title}
-            name={selectedSubsection?.name}
-            labelID={selectedSubsection?.labelID}
-            labelText={selectedSubsection?.title}
-            // defaultValue={defaultProblemSelection}
-            array={selectedSubsection?.problems.map((problem, index) => problem.group)}
-          />
-
-          <SelectStringInput
-            name={selectedSubsection?.name}
-            labelID={selectedSubsection?.labelID}
-            labelText={selectedSubsection?.title}
-            defaultValue={selectedProblem?.group}
-            array={problemList.map((problem) => problem.group)}
-          />
-        </FormProvider>
-
-        <Typography variant="body1">
-          <>Selected Problem: {selectedProblem?.title}</>
-        </Typography>
-
-        {selectedSubsection && (
-          <>
-            <Typography variant="h5" gutterBottom>
-              Select Root Causes
-            </Typography>
-            <Grid container>
-              {filteredRootCausesAndInterventions.map((item) => (
-                <>
-                  <Grid item xs={6}>
-                    <Button onClick={() => console.log(item.rootCause)} value={item.rootCause}>
-                      {item.rootCause}
-                    </Button>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button onClick={() => console.log(item.intervention)} value={item.intervention}>
-                      {item.intervention}
-                    </Button>
-                  </Grid>
-                </>
-              ))}
-            </Grid>
-          </>
-        )}
-      </Box>
-    </Box>
   );
 }
