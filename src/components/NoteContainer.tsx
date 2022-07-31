@@ -14,7 +14,6 @@ import CopyToClipboardButton from "./CopyToClipboardButton";
 
 // data imports
 import { nutritionTopicData } from "../data/nutritionTopicData";
-import { rootCausesAndInterventions } from "../data/rootCausesAndInterventions";
 import NutritionTopicDataType from "../lib/interfaces/NutritionTopicDataType";
 import NoteContainerB from "./NoteContainer";
 

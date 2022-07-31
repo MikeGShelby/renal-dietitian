@@ -1,6 +1,5 @@
 // data imports
 import { nutritionTopicData } from "../../data/nutritionTopicData";
-import { rootCausesAndInterventions } from "../../data/rootCausesAndInterventions";
 
 // Type imports
 import NutritionTopicDataType from "../../lib/interfaces/NutritionTopicDataType";

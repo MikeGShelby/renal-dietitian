@@ -12,7 +12,6 @@ import { ImCheckmark2 as CheckmarkIcon } from "react-icons/im";
 
 // data imports
 import { nutritionTopicData } from "../data/nutritionTopicData";
-import { rootCausesAndInterventions } from "../data/rootCausesAndInterventions";
 import NutritionTopicDataType from "../lib/interfaces/NutritionTopicDataType";
 
 interface Props {

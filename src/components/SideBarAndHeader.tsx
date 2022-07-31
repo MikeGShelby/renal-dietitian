@@ -44,7 +44,6 @@ import { useNutritionProblemContext } from "../context/NutritionProblemContext";
 
 // data imports
 import { nutritionTopicData } from "../data/nutritionTopicData";
-import { rootCausesAndInterventions } from "../data/rootCausesAndInterventions";
 
 // Type imports
 import NutritionTopicDataType from "../lib/interfaces/NutritionTopicDataType";
@@ -199,9 +198,6 @@ export default function SideBarAndHeader(props: Props) {
   const selectedProblemsArrayWithoutUndefined = selectedProblemsArray.filter((element) => {
     return element !== undefined;
   });
-
-  // Root causes and interventions, filtered based on the selected problem
-  const filteredRootCausesAndInterventions = rootCausesAndInterventions.filter((item) => item.groups.includes(defaultProblemSelection));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

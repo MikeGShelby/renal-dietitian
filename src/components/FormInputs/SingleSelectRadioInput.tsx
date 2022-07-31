@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup } from "@mui/material";
 
 // Type imports
 import NutritionProblemDataType from "../../lib/interfaces/NutritionProblemDataType";
@@ -27,11 +27,18 @@ export default function SingleSelectToggleInput({ name, labelID, labelText, arra
         control={control}
         render={({ field }) => (
           <RadioGroup {...field}>
-            {array.map((item) => (
-              <>
-                <FormControlLabel value={item} control={<Radio />} label={item} style={{ backgroundColor: "blue", padding: 5, margin: 5, borderRadius: 10 }} />
-              </>
-            ))}
+            <Grid container>
+              {array.map((item) => (
+                <Grid item key={item} xs={6} sx={{ backgroundColor: "yellow" }}>
+                  <FormControlLabel
+                    value={item}
+                    control={<Radio />}
+                    label={item}
+                    style={{ backgroundColor: "blue", padding: 5, margin: 5, borderRadius: 10, minWidth: 250 }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
           </RadioGroup>
         )}
       />

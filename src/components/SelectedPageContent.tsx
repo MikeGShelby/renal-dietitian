@@ -44,7 +44,7 @@ import { useNutritionProblemContext } from "../context/NutritionProblemContext";
 
 // data imports
 import { nutritionTopicData } from "../data/nutritionTopicData";
-import { rootCausesAndInterventions } from "../data/rootCausesAndInterventions";
+import { rootCausesAndInterventionsData } from "../data/rootCausesAndInterventionsData";
 
 // Type imports
 import NutritionTopicDataType from "../lib/interfaces/NutritionTopicDataType";
@@ -95,6 +95,12 @@ export default function SideBarAndHeader(props: Props) {
     setSelectedPotassiumProblem,
     defaultProblemSelection,
     setDefaultProblemSelection,
+
+    // **** ROOT CAUSE AND INTERVENTION SELECTIONS **** //
+    rootCauseList,
+    setRootCauseList,
+    selectedRootCauses,
+    setSelectedRootCauses,
   } = useNutritionProblemContext();
 
   // Misc. hooks
@@ -221,6 +227,11 @@ export default function SideBarAndHeader(props: Props) {
     setSelectedPotassiumProblem(selectPotassiumProblem);
   }, [selectPotassiumProblem]);
 
+  // ROOT CAUSES AND INTERVENTIONS //
+  useEffect(() => {
+    setSelectedRootCauses(selectRootCausesAndInterventions);
+  }, [selectRootCausesAndInterventions]);
+
   useEffect(() => {
     setSelectedProblemsArray([
       selectWeightProblem?.title,
@@ -249,7 +260,7 @@ export default function SideBarAndHeader(props: Props) {
   });
 
   // Root causes and interventions, filtered based on the selected problem
-  const filteredRootCausesAndInterventions = rootCausesAndInterventions.filter((item) => item.groups.includes(selectedProblem?.group || ""));
+  const filteredRootCausesAndInterventions = rootCausesAndInterventionsData.filter((item) => item.groups.includes(selectedProblem?.group || ""));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -302,14 +313,6 @@ export default function SideBarAndHeader(props: Props) {
           array={selectedSubsection?.problems.map((problem, index) => problem.group)}
         />
 
-        {/* <SelectStringInput
-          name={selectedSubsection?.name}
-          labelID={selectedSubsection?.labelID}
-          labelText={selectedSubsection?.title}
-          defaultValue={selectedProblem?.group}
-          array={problemList.map((problem) => problem.group)}
-        /> */}
-
         <Typography variant="body1">
           <>Selected Problem: {selectedProblem?.title}</>
         </Typography>
@@ -327,21 +330,9 @@ export default function SideBarAndHeader(props: Props) {
               name={"selectRootCausesAndInterventions"}
               labelID={"label-id-selectRootCausesAndInterventions"}
               labelText={"Select Root Causes and Interventions"}
-              defaultValue={[]}
+              defaultValue={selectedRootCauses?.map((item) => item.rootCause)}
               array={filteredRootCausesAndInterventions.map((item) => item.rootCause)}
             />
-
-            <List>
-              {filteredRootCausesAndInterventions.map((item) => (
-                <>
-                  <ListItem>
-                    {item.rootCause}
-                    <br />
-                    {item.intervention}
-                  </ListItem>
-                </>
-              ))}
-            </List>
           </>
         )}
       </FormProvider>
