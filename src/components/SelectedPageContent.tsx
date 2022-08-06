@@ -65,6 +65,7 @@ interface Props {
 export default function SideBarAndHeader(props: Props) {
   // Context hooks
   const {
+    // PAGE AND SUBSECTION STATE
     pageList,
     setPageList,
     selectedPage,
@@ -73,6 +74,8 @@ export default function SideBarAndHeader(props: Props) {
     setSubsectionList,
     selectedSubsection,
     setSelectedSubsection,
+
+    // PROBLEM STATE
     problemList,
     setProblemList,
     selectedProblem,
@@ -96,7 +99,7 @@ export default function SideBarAndHeader(props: Props) {
     defaultProblemSelection,
     setDefaultProblemSelection,
 
-    // **** ROOT CAUSE AND INTERVENTION SELECTIONS **** //
+    // **** ROOT CAUSE AND INTERVENTION STATE **** //
     rootCauseList,
     setRootCauseList,
     selectedRootCauses,
@@ -134,56 +137,50 @@ export default function SideBarAndHeader(props: Props) {
   const selectRootCausesAndInterventions = watch("selectRootCausesAndInterventions");
 
   // ************************** PAGE SELECTION ************************** //
-  useEffect(() => {
-    setSubsectionList(selectedPage?.subsections);
-  }, [selectedPage]);
+  // useEffect(() => {
+  //   setSubsectionList(selectedPage?.subsections);
+  // }, [selectedPage]);
 
-  // ************************** SUBSECTION SELECTION ************************** //
-  useEffect(() => {
-    setProblemList(selectedSubsection?.problems);
-  }, [selectedSubsection]);
-
-  const getProblemFromName = (groupName: string) => {
-    setSelectedProblem(problemList.find((problem) => problem.group === groupName));
-  };
+  // // ************************** SUBSECTION SELECTION ************************** //
+  // useEffect(() => {
+  //   setProblemList(selectedSubsection?.problems);
+  // }, [selectedSubsection]);
 
   // Each time a page subsection or specific problem is selected, update the default problem value and the specific problem value to display the selected problem for the selected subsection.
   useEffect(() => {
     switch (selectedSubsection?.title) {
       case "Weight":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectWeightProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectWeightProblem) || null);
         setSelectedWeightProblem(selectWeightProblem);
         break;
       case "Fluid":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectFluidProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectFluidProblem) || null);
         setSelectedFluidProblem(selectFluidProblem);
         break;
       case "Albumin":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectAlbuminProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectAlbuminProblem) || null);
         setSelectedAlbuminProblem(selectAlbuminProblem);
         break;
       case "Phosphorus":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectPhosphorusProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectPhosphorusProblem) || null);
         setSelectedPhosphorusProblem(selectPhosphorusProblem);
         break;
       case "PTH":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectPTHProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectPTHProblem) || null);
         setSelectedPTHProblem(selectPTHProblem);
         break;
       case "Calcium":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectCalciumProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectCalciumProblem) || null);
         setSelectedCalciumProblem(selectCalciumProblem);
         break;
       case "Potassium":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectFluidProblem));
+        setSelectedProblem(problemList.find((problem) => problem.group === selectFluidProblem) || null);
         setSelectedPotassiumProblem(selectPotassiumProblem);
         break;
     }
-    console.log("problem selection group", selectedProblem?.group);
-    console.log("root causes and interventions", filteredRootCausesAndInterventions);
   }, [
     selectedSubsection,
-    selectedProblem,
+    // selectedProblem,
     selectWeightProblem,
     selectFluidProblem,
     selectAlbuminProblem,
@@ -192,6 +189,22 @@ export default function SideBarAndHeader(props: Props) {
     selectCalciumProblem,
     selectPotassiumProblem,
   ]);
+
+  // If phosphorus problem changes, then update hyperphosphatemia root cause and intervention selections.
+  useEffect(() => {
+    if (selectPhosphorusProblem === "High Phosphorus" && !selectedRootCauses?.includes("Hyperphosphatemia.")) {
+      setSelectedRootCauses([...(selectedRootCauses || ""), "Hyperphosphatemia."]);
+      console.log("high phosphorus is a problem and hyperphosphatemia is not a selected root cause");
+      console.log("select root causes", selectRootCausesAndInterventions);
+      console.log("selected root causes", selectedRootCauses);
+    } else if (selectPhosphorusProblem === "Low Phosphorus" && selectedRootCauses?.includes("Hyperphosphatemia.")) {
+      setSelectedRootCauses(selectedRootCauses?.filter((rootCause) => rootCause !== "Hyperphosphatemia") || []);
+
+      console.log("Low phosphorus is a problem and hyperphosphatemia IS a selected root cause");
+      console.log("select root causes", selectRootCausesAndInterventions);
+      console.log("selected root causes", selectedRootCauses);
+    }
+  }, [selectPhosphorusProblem, selectPTHProblem]);
 
   /// ******
   useEffect(() => {
@@ -232,15 +245,16 @@ export default function SideBarAndHeader(props: Props) {
     setSelectedRootCauses(selectRootCausesAndInterventions);
   }, [selectRootCausesAndInterventions]);
 
+  // Each time the selected page or problem changes, add the selected problem to the selected problems array.
   useEffect(() => {
     setSelectedProblemsArray([
-      selectWeightProblem?.title,
-      selectFluidProblem?.title,
-      selectAlbuminProblem?.title,
-      selectPhosphorusProblem?.title,
-      selectPTHProblem?.title,
-      selectCalciumProblem?.title,
-      selectPotassiumProblem?.title,
+      selectWeightProblem,
+      selectFluidProblem,
+      selectAlbuminProblem,
+      selectPhosphorusProblem,
+      selectPTHProblem,
+      selectCalciumProblem,
+      selectPotassiumProblem,
     ]);
   }, [
     selectedPage,
@@ -254,10 +268,7 @@ export default function SideBarAndHeader(props: Props) {
     selectPotassiumProblem,
   ]);
 
-  // This filtered version of the array will not contain any undefined values
-  const selectedProblemsArrayWithoutUndefined = selectedProblemsArray.filter((element) => {
-    return element !== undefined;
-  });
+  // Each time the selected problem changes, update the selected root cause array to include any root cause that matches the selected problem.
 
   // Root causes and interventions, filtered based on the selected problem
   const filteredRootCausesAndInterventions = rootCausesAndInterventionsData.filter((item) => item.groups.includes(selectedProblem?.group || ""));
@@ -309,7 +320,7 @@ export default function SideBarAndHeader(props: Props) {
           name={selectedSubsection?.name}
           labelID={selectedSubsection?.labelID}
           labelText={selectedSubsection?.title}
-          // defaultValue={defaultProblemSelection}
+          defaultValue={selectedProblem?.group || null}
           array={selectedSubsection?.problems.map((problem, index) => problem.group)}
         />
 
@@ -318,21 +329,35 @@ export default function SideBarAndHeader(props: Props) {
         </Typography>
 
         {/* Root Causes and Interventions */}
-        {selectedSubsection && (
+
+        {selectedProblem && (
           <>
             <Typography variant="h5" gutterBottom>
               Select Root Causes
               {selectRootCausesAndInterventions?.map((item: any) => item)}
             </Typography>
 
-            <MemoizedMultiSelectCheckboxInput
-              key={selectedSubsection?.title}
-              name={"selectRootCausesAndInterventions"}
-              labelID={"label-id-selectRootCausesAndInterventions"}
-              labelText={"Select Root Causes and Interventions"}
-              defaultValue={selectedRootCauses?.map((item) => item.rootCause)}
-              array={filteredRootCausesAndInterventions.map((item) => item.rootCause)}
-            />
+            {["Medication/Supplement-Related", "Nutritional", "Clinical/Medical"].map((category) => (
+              <>
+                {filteredRootCausesAndInterventions.filter((item) => item.type === category).length > 0 && (
+                  <>
+                    <Typography variant="h5" gutterBottom>
+                      {category}
+                    </Typography>
+
+                    <MemoizedMultiSelectCheckboxInput
+                      key={category}
+                      name={"selectRootCausesAndInterventions"}
+                      labelID={"label-id-selectRootCausesAndInterventions"}
+                      labelText={"Select Root Causes and Interventions"}
+                      defaultValue={selectedRootCauses}
+                      // defaultValue={selectedRootCauses?.map((item) => item.rootCause)}
+                      array={filteredRootCausesAndInterventions.filter((item) => item.type === category).map((item) => item.rootCause)}
+                    />
+                  </>
+                )}
+              </>
+            ))}
           </>
         )}
       </FormProvider>

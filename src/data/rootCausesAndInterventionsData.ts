@@ -101,44 +101,31 @@ export const rootCausesAndInterventionsData = [
   {
     rootCause: "Inadequate oral intake.",
     intervention: "Provided education and counseling on ways to increase nutritional intake.",
-    type: "Nuritional",
-    groups: ["Weight Loss", "Low Albumin", "Low Phosphorus", "Low Potassium"],
-  },
-  {
-    rootCause: "Inadequate nutritional intake (below 1.2 g of protein and/or 30-35 calories per kilogram of adjusted Edema-Free BodyWeight)",
-    intervention: "Provided education and counseling on ways to increase nutritional intake.",
-    type: "Nuritional",
-    groups: ["Weight Loss", "Low Albumin"],
+    type: "Nutritional",
+    groups: ["Weight Loss 1 month", "Weight Loss 3 months", "Low Albumin", "Low Phosphorus", "Low Potassium"],
   },
   {
     rootCause: "No clear nutritional cause identified.",
     intervention: "Encouraged adequate intake. Continue to monitor weight trend closely.",
-    type: "Nuritional",
-    groups: ["Weight Loss"],
+    type: "Nutritional",
+    groups: ["Weight Loss 1 month", "Weight Loss 3 months"],
   },
   {
     rootCause: "No clear nutritional cause identified.",
-    intervention: "Encouraged adequate intake. Continue to monitor weight trend closely.",
-    type: "Nuritional",
+    intervention: "Encouraged adequate intake. Continue to monitor albumin levels closely.",
+    type: "Nutritional",
     groups: ["Low Albumin"],
   },
   {
-    rootCause: "No clear nutritional cause identified in the Hypoalbuminemia Algorithm.",
-    intervention: "Encouraged adequate intake. Continue to monitor albumin levels closely.",
-    type: "Nuritional",
-    groups: ["Weight Loss", "Low Albumin"],
-  },
-
-  {
     rootCause: "Patient reporting fluid intake exceeding 1.5 L daily.",
     intervention: "Provided education and counseling on reducing fluid intake.",
-    type: "Nuritional",
+    type: "Nutritional",
     groups: ["High Fluid"],
   },
   {
     rootCause: "IDWG >4% EDW, related to excessive daily fluid intake.",
     intervention: "Provided education and counseling on reducing fluid intake.",
-    type: "Nuritional",
+    type: "Nutritional",
     groups: ["Low Albumin"],
   },
   {
@@ -165,7 +152,7 @@ export const rootCausesAndInterventionsData = [
     rootCause: "Recent hospitalization in 1 month.",
     intervention: "Encouraged adequate intake. Continue to monitor weight trend closely.",
     type: "Clinical/Medical",
-    groups: ["Weight Loss", "Low Albumin"],
+    groups: ["Weight Loss 1 month", "Weight Loss 3 months", "Low Albumin"],
   },
 
   {

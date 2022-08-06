@@ -10,11 +10,12 @@ interface Props {
   name: string;
   labelID: string;
   labelText: string;
+  defaultValue: string | null;
   // defaultValue: NutritionProblemDataType | null;
   array: string[];
   // array: NutritionProblemDataType[];
 }
-export default function SingleSelectToggleInput({ name, labelID, labelText, array }: Props): ReactElement {
+export default function SingleSelectToggleInput({ name, labelID, labelText, defaultValue, array }: Props): ReactElement {
   // Context hooks
   const { control } = useFormContext();
 
@@ -25,6 +26,7 @@ export default function SingleSelectToggleInput({ name, labelID, labelText, arra
         rules={{ required: true }}
         name={name}
         control={control}
+        defaultValue={defaultValue}
         render={({ field }) => (
           <RadioGroup {...field}>
             <Grid container>

@@ -27,11 +27,12 @@ interface NutritionProblemContextType {
   selectedSubsection: NutritionSubsectionDataType;
   setSelectedSubsection: Dispatch<SetStateAction<NutritionSubsectionDataType>>;
 
+  // ************************** GENERIC PROBLEM SELECTIONS ************************** //
   problemList: NutritionProblemDataType[];
   setProblemList: Dispatch<SetStateAction<NutritionProblemDataType[]>>;
 
-  selectedProblem: NutritionProblemDataType | null | undefined;
-  setSelectedProblem: Dispatch<SetStateAction<NutritionProblemDataType | null | undefined>>;
+  selectedProblem: NutritionProblemDataType | null;
+  setSelectedProblem: Dispatch<SetStateAction<NutritionProblemDataType | null>>;
 
   selectedProblemsArray: string[];
   setSelectedProblemsArray: Dispatch<SetStateAction<string[]>>;
@@ -64,8 +65,8 @@ interface NutritionProblemContextType {
   // ************************** ROOT CAUSE/INTERVENTION SELECTIONS ************************** //
   rootCauseList: CauseAndInterventionDataType[];
   setRootCauseList: Dispatch<SetStateAction<CauseAndInterventionDataType[]>>;
-  selectedRootCauses: CauseAndInterventionDataType[];
-  setSelectedRootCauses: Dispatch<SetStateAction<CauseAndInterventionDataType[]>>;
+  selectedRootCauses: string[];
+  setSelectedRootCauses: Dispatch<SetStateAction<string[]>>;
 }
 
 const NutritionProblemContext = createContext<NutritionProblemContextType>({} as NutritionProblemContextType);
@@ -82,11 +83,13 @@ export default function NutritionProblemContextComponent({ children }: Props): R
   const [subsectionList, setSubsectionList] = useState<NutritionSubsectionDataType[]>(nutritionTopicData[0].subsections);
   const [selectedSubsection, setSelectedSubsection] = useState<NutritionSubsectionDataType>(selectedPage.subsections[0]);
 
-  // ************************** PROBLEM SELECTIONS ************************** //
+  // ************************** GENERIC PROBLEM SELECTIONS ************************** //
   const [problemList, setProblemList] = useState<NutritionProblemDataType[]>([]);
-  const [selectedProblem, setSelectedProblem] = useState<NutritionProblemDataType | null | undefined>(null);
+  const [selectedProblem, setSelectedProblem] = useState<NutritionProblemDataType | null>(null);
 
   const [selectedProblemsArray, setSelectedProblemsArray] = useState<string[]>([]);
+
+  // ************************** NUTRITION PROBLEM SELECTIONS ************************** //
 
   const [selectedWeightProblem, setSelectedWeightProblem] = useState<string | null>(null);
   const [selectedFluidProblem, setSelectedFluidProblem] = useState<string | null>(null);
@@ -100,12 +103,13 @@ export default function NutritionProblemContextComponent({ children }: Props): R
 
   // ************************** ROOT CAUSE/INTERVENTION SELECTIONS ************************** //
   const [rootCauseList, setRootCauseList] = useState<CauseAndInterventionDataType[]>(rootCausesAndInterventionsData);
-  const [selectedRootCauses, setSelectedRootCauses] = useState<CauseAndInterventionDataType[]>([]);
+  const [selectedRootCauses, setSelectedRootCauses] = useState<string[]>([]);
+  // const [selectedRootCauses, setSelectedRootCauses] = useState<CauseAndInterventionDataType[]>([]);
 
   return (
     <NutritionProblemContext.Provider
       value={{
-        // FILTER CONTROLS
+        // PAGE SELECTIONS
         pageList,
         setPageList,
         selectedPage,
@@ -114,12 +118,16 @@ export default function NutritionProblemContextComponent({ children }: Props): R
         setSubsectionList,
         selectedSubsection,
         setSelectedSubsection,
+
+        // GENERIC PROBLEM SELECTIONS
         problemList,
         setProblemList,
         selectedProblem,
         setSelectedProblem,
         selectedProblemsArray,
         setSelectedProblemsArray,
+
+        // SPECIFIC PROBLEM SELECTIONS
         selectedWeightProblem,
         setSelectedWeightProblem,
         selectedFluidProblem,

@@ -6,7 +6,7 @@ interface Props {
   name: string;
   labelID: string;
   labelText: string;
-  defaultValue: string | undefined | null;
+  defaultValue: string | null;
   array: string[];
 }
 

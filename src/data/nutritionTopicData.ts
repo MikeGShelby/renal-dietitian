@@ -10,11 +10,11 @@ export const nutritionTopicData = [
         problems: [
           {
             title: ">= 5% EDW loss in 1 month",
-            group: "Weight Loss",
+            group: "Weight Loss 1 month",
           },
           {
             title: ">= 7.5% EDW loss in 3 months",
-            group: "Weight Loss",
+            group: "Weight Loss 3 months",
           },
         ],
       },
@@ -91,6 +91,27 @@ export const nutritionTopicData = [
           {
             title: "Calcium > 10.2",
             group: "High Calcium",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Potassium",
+    description: "???",
+    subsections: [
+      {
+        title: "Potassium",
+        name: "selectPotassiumProblem",
+        labelID: "potassium-problem-select",
+        problems: [
+          {
+            title: "Potassium < 3.5 g/dL",
+            group: "Low Potassium",
+          },
+          {
+            title: "Potassium > 5.5 g/dL",
+            group: "High Potassium",
           },
         ],
       },

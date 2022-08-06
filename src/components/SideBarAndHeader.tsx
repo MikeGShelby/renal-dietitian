@@ -133,10 +133,6 @@ export default function SideBarAndHeader(props: Props) {
     setProblemList(selectedSubsection?.problems);
   }, [selectedSubsection]);
 
-  const getProblemFromName = (groupName: string) => {
-    setSelectedProblem(problemList.find((problem) => problem.group === groupName));
-  };
-
   /// ******
   useEffect(() => {
     setSelectedSubsection(selectedPage.subsections[0]);
@@ -170,29 +166,6 @@ export default function SideBarAndHeader(props: Props) {
   useEffect(() => {
     setSelectedPotassiumProblem(selectPotassiumProblem);
   }, [selectPotassiumProblem]);
-
-  // Each time the selected page or problem changes, add the selected problem to the selected problems array.
-  useEffect(() => {
-    setSelectedProblemsArray([
-      selectWeightProblem?.title,
-      selectFluidProblem?.title,
-      selectAlbuminProblem?.title,
-      selectPhosphorusProblem?.title,
-      selectPTHProblem?.title,
-      selectCalciumProblem?.title,
-      selectPotassiumProblem?.title,
-    ]);
-  }, [
-    selectedPage,
-    selectedProblem,
-    selectWeightProblem,
-    selectFluidProblem,
-    selectAlbuminProblem,
-    selectPhosphorusProblem,
-    selectPTHProblem,
-    selectCalciumProblem,
-    selectPotassiumProblem,
-  ]);
 
   // This filtered version of the array will not contain any undefined values
   const selectedProblemsArrayWithoutUndefined = selectedProblemsArray.filter((element) => {

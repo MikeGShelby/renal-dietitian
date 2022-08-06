@@ -62,6 +62,7 @@ interface Props {
 export default function DrawerContent(props: Props) {
   // Context hooks
   const {
+    // PAGE AND SUBSECTION STATE
     pageList,
     setPageList,
     selectedPage,
@@ -70,6 +71,8 @@ export default function DrawerContent(props: Props) {
     setSubsectionList,
     selectedSubsection,
     setSelectedSubsection,
+
+    // PROBLEM STATE
     problemList,
     setProblemList,
     selectedProblem,
@@ -92,6 +95,12 @@ export default function DrawerContent(props: Props) {
     setSelectedPotassiumProblem,
     defaultProblemSelection,
     setDefaultProblemSelection,
+
+    // **** ROOT CAUSE AND INTERVENTION STATE **** //
+    rootCauseList,
+    setRootCauseList,
+    selectedRootCauses,
+    setSelectedRootCauses,
   } = useNutritionProblemContext();
 
   // Misc. hooks
@@ -132,126 +141,9 @@ export default function DrawerContent(props: Props) {
     setProblemList(selectedSubsection?.problems);
   }, [selectedSubsection]);
 
-  const getProblemFromName = (groupName: string) => {
-    setSelectedProblem(problemList.find((problem) => problem.group === groupName));
-  };
-
-  // Each time a page subsection is selected, update the default value to display the selected problem for that particular subsection.
-  useEffect(() => {
-    switch (selectedSubsection?.title) {
-      case "Weight":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectWeightProblem));
-        setSelectedWeightProblem(selectWeightProblem);
-        break;
-      case "Fluid":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectFluidProblem));
-        setSelectedFluidProblem(selectFluidProblem);
-        break;
-      case "Albumin":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectAlbuminProblem));
-        setSelectedAlbuminProblem(selectAlbuminProblem);
-        break;
-      case "Phosphorus":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectPhosphorusProblem));
-        setSelectedPhosphorusProblem(selectPhosphorusProblem);
-        break;
-      case "PTH":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectPTHProblem));
-        setSelectedPTHProblem(selectPTHProblem);
-        break;
-      case "Calcium":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectCalciumProblem));
-        setSelectedCalciumProblem(selectCalciumProblem);
-        break;
-      case "Potassium":
-        setSelectedProblem(problemList.find((problem) => problem.group === selectFluidProblem));
-        setSelectedPotassiumProblem(selectPotassiumProblem);
-        break;
-    }
-    console.log("currently selected problem", selectedProblem);
-  }, [
-    selectedSubsection,
-    selectedProblem,
-    selectWeightProblem,
-    selectFluidProblem,
-    selectAlbuminProblem,
-    selectPhosphorusProblem,
-    selectPTHProblem,
-    selectCalciumProblem,
-    selectPotassiumProblem,
-  ]);
-
-  // ************************** SUBSECTION SELECTION ************************** //
-  // useEffect(() => {
-  //   setSelectedProblem(selectProblem);
-
-  //   // console.log(subsectionList?.find((subsection) => subsection.title == selectSubsection));
-
-  //   // setSelectedSubsection(subsectionList?.find((subsection) => subsection.title == selectSubsection));
-  //   // setAreaList(locationList?.find((location) => location.title == selectLocation)?.areas);
-  // }, [selectProblem]);
-
-  /// ******
-  useEffect(() => {
-    setSelectedSubsection(selectedPage.subsections[0]);
-  }, [selectedPage]);
-
-  // Create problem selection each time the selection variable changes
-  useEffect(() => {
-    setSelectedWeightProblem(selectWeightProblem);
-  }, [selectWeightProblem]);
-
-  useEffect(() => {
-    setSelectedFluidProblem(selectFluidProblem);
-  }, [selectFluidProblem]);
-
-  useEffect(() => {
-    setSelectedAlbuminProblem(selectAlbuminProblem);
-  }, [selectAlbuminProblem]);
-
-  useEffect(() => {
-    setSelectedPhosphorusProblem(selectPhosphorusProblem);
-  }, [selectPhosphorusProblem]);
-
-  useEffect(() => {
-    setSelectedPTHProblem(selectPTHProblem);
-  }, [selectPTHProblem]);
-
-  useEffect(() => {
-    setSelectedCalciumProblem(selectCalciumProblem);
-  }, [selectCalciumProblem]);
-
-  useEffect(() => {
-    setSelectedPotassiumProblem(selectPotassiumProblem);
-  }, [selectPotassiumProblem]);
-
-  // Each time the selected page or problem changes, add the selected problem to the selected problems array.
-  useEffect(() => {
-    setSelectedProblemsArray([
-      selectWeightProblem?.title,
-      selectFluidProblem?.title,
-      selectAlbuminProblem?.title,
-      selectPhosphorusProblem?.title,
-      selectPTHProblem?.title,
-      selectCalciumProblem?.title,
-      selectPotassiumProblem?.title,
-    ]);
-  }, [
-    selectedPage,
-    selectedProblem,
-    selectWeightProblem,
-    selectFluidProblem,
-    selectAlbuminProblem,
-    selectPhosphorusProblem,
-    selectPTHProblem,
-    selectCalciumProblem,
-    selectPotassiumProblem,
-  ]);
-
-  // This filtered version of the array will not contain any undefined values
-  const selectedProblemsArrayWithoutUndefined = selectedProblemsArray.filter((element) => {
-    return element !== undefined;
-  });
+  // This filtered version of the array will not contain any undefined or null values. This should be displayed in the side drawer above the notes for all selected problems.
+  // const selectedProblemsArrayWithoutUndefined = selectedProblemsArray.filter((element) => element !== undefined && element !== null);
+  const selectedProblemsArrayWithoutUndefined = [...new Set(selectedProblemsArray.filter((element) => element !== undefined && element !== null))];
 
   // Root causes and interventions, filtered based on the selected problem
   const filteredRootCausesAndInterventions = rootCausesAndInterventionsData.filter((item) => item.groups.includes(defaultProblemSelection));
@@ -267,7 +159,7 @@ export default function DrawerContent(props: Props) {
       <Toolbar />
       <Divider />
       <List>
-        {nutritionTopicData.map((nutritionTopic, index) => (
+        {nutritionTopicData.map((nutritionTopic) => (
           <ListItem key={nutritionTopic.title} disablePadding>
             <ListItemButton onClick={() => setSelectedPage(nutritionTopic)}>
               <ListItemIcon>
@@ -286,11 +178,21 @@ export default function DrawerContent(props: Props) {
       <List>
         {selectedProblemsArrayWithoutUndefined?.map((problem, index) => (
           <>
-            <ListItem key={problem} disablePadding>
-              <ListItemButton>
-                <ListItemText primary={problem} />
-              </ListItemButton>
+            <ListItem key={problem} disablePadding sx={{ backgroundColor: "red" }}>
+              <ListItemText primary={problem} />
             </ListItem>
+            <List>
+              {rootCausesAndInterventionsData
+                .filter((item) => item.groups.includes(problem))
+                .filter((item) => selectedRootCauses?.includes(item.rootCause))
+                .map((item) => (
+                  <>
+                    <ListItem key={item.rootCause} disablePadding>
+                      <ListItemText primary={item.rootCause} />
+                    </ListItem>
+                  </>
+                ))}
+            </List>
           </>
         ))}
       </List>
